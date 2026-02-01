@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="2nd Graded">
+    <meta name="keywords" content="2nd Graded">
+    <meta name="author" content="Nikki">
+    <title>Q32GLithiumMagbanua</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="" sizes="32x32" type="image/png" />
+    <script src="script.js"defer></script>
+
+    <style>
+        body {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            font-family: sans-serif, Arial;
+        }
+
+        table, th, td {
+            border: 1px solid #838383;
+            border-collapse: collapse;
+            padding: 8px;
+            text-align: left;
+            border-radius: 10px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <h1> Show List of Students Who Signed Up </h1>
+    <h4> By Nikki Magbanua </h4>
+
+    <a href="Q32GLithiumMagbanua.html"> Back to Sign Up Form </a>
+    <h1> Select your Club: </h1>
+
+    <label> Filter by Club:
+        <select id="sections">
+            <option value="ALL">ALL</option>
+            <option value="makerclb">Pisay.XYZ</option>
+            <option value="artclb">Likha</option>
+            <option value="chemclb">Atom</option>
+            <option value="movclb">Celluloid</option>
+            <option value="litclb">Ellipsis</option>
+        </select>
+    </label>
+
+    <p id="total"></p>
+
+    <table>
+    <thead>
+        <tr>
+        <th>Club</th>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Grade</th>
+        <th>Email</th>
+        <th>Mobile</th>
+        <th>Intern | Extern </th>
+        </tr>
+    </thead>
+    <tbody id="tableinfo"></tbody>
+    </table>
+
+    <p id="msg"></p>
+
+</body>
+
+<script>
+    const KEY = "signups";
+    const filter = document.getElementById("sections");
+    const tableInfo = document.getElementById("tableinfo");
+    const totalText = document.getElementById("total");
+    const msg = document.getElementById("msg");
+
+    const clubname = {
+        makerclb: "Pisay.XYZ",
+        artclb: "Likha",
+        chemclb: "ATOM",
+        movclb: "Celluloid",
+        litclb: "Ellipsis"
+    };
+
+    const gradelevel = {
+        g7: "Grade 7",
+        g8: "Grade 8",
+        g9: "Grade 9",
+        g10: "Grade 10",
+        g11: "Grade 11",
+        g12: "Grade 12"
+    };
+
+    function loadSignups() {
+        const raw = localStorage.getItem(KEY);
+        if (raw){  
+            return JSON.parse(raw);
+        }
+        else{
+            return [];
+        }
+    }
+
+    function render(selectedClub = "ALL") {
+        const signups = loadSignups();
+        tableInfo.innerHTML = "";
+        msg.textContent = "";
+
+        if (signups.length === 0) {
+            totalText.textContent = "Total Sign Ups: 0";
+            msg.textContent = "No Sign Ups Yet...";
+            return;
+        }
+
+        let filtered = signups;
+        if (selectedClub !== "ALL") {
+            filtered = signups.filter(signsmth => signsmth.club === selectedClub);
+        }
+
+        if (filtered.length === 0) {
+            totalText.textContent = "Total Sign Ups: 0";
+            msg.textContent = "No Sign Ups Yet...";
+            return;
+        }
+
+        for (let i = 0; i < filtered.length; i++) {
+            const signsmth = filtered[i];
+
+            const row = `
+            <tr>
+                <td>${clubname[signsmth.club]}</td>
+                <td>${signsmth.studentID}</td>
+                <td>${signsmth.name}</td>
+                <td>${gradelevel[signsmth.glevel]}</td>
+                <td>${signsmth.email}</td>
+                <td>${signsmth.mpnum}</td>
+                <td>${signsmth.homestat}</td>
+            </tr>
+            `;
+            tableInfo.innerHTML += row;
+        }
+
+        totalText.textContent = "Total Sign Ups: " + filtered.length;
+    }
+
+    filter.onchange = function () {
+        render(this.value);
+    };
+
+    render();
+
+</script>

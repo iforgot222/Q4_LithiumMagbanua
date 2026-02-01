@@ -20,7 +20,7 @@
         }
 
         fieldset {
-            border: 3px solid #adadad;
+            border:1px solid #707070;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 30px;
@@ -32,12 +32,24 @@
         }
 
         input, textarea, select {
-            border-radius: 3px;
-            border: 2px solid #888888;
+            border-radius: 2px;
+            border: 1px solid #888888;
         }
 
         input:focus, textarea:focus, select:focus {
             background-color: #e7e7e7;
+        }
+
+        .btn {
+            font-size: 15px;
+            padding: 5px;
+            border: 1px solid #888888;
+            border-radius: 5px;
+        }
+
+        .btns {
+            display: flex;
+            gap: 10px;
         }
         
     </style>
@@ -46,7 +58,7 @@
 <body>
     <h1>2nd Graded Exercise</h1>
 
-    <form action="submit" method="post" onsubmit="return submitconf()" onreset="return resetconf()">
+    <form id="signupForm">
         <fieldset>
             <legend>General Information</legend>
 
@@ -109,35 +121,71 @@
         </fieldset>
         
         <label for="whyjoin"> Why do you want to join?
-            </br></br><textarea id="whyjoin" name="whyjoin" rows="4" cols="100" required placeholder="Enter your reason here."onblur="checkempty(this)"> </textarea>
+            </br></br><textarea id="whyjoin" name="whyjoin" rows="4" cols="105" required placeholder="Enter your reason here."onblur="checkempty(this)"> </textarea>
         </label> </br>
 
-        <input type='submit' name='Submit' value='Submit'/>
-        <input type='reset' name='Reset' value='Reset'/>
+        <section class="btns">
+            <form onsubmit="return submitconf()">
+                <input class="btn" type='submit' name='Submit' value='Submit'/>
+            </form>
+            <form onreset="return resetconf()">
+                <input class="btn" type='reset' name='Reset' value='Reset'/>
+            </form>
+            <button class="btn" type="button" onclick="window.location.href='viewSignUps.html'"> View Signups</button>
+        </section>
+
     </form>
 </body>
 
 <script>
-
-    function submitconf() {
-        return confirm("Are you sure you want to submit the form?");
-    }
-
-    function resetconf() {
-        return confirm("Are you sure you want to reset the form?");
-    }
-
-
     function checkempty(field) {
         if (field.value.trim() == "") {
-            field.style.border = "2px solid red";
-            field.style.backgroundColor = "#ffe7e7";
+            field.style.border = "1px solid red"
+            field.style.backgroundColor = "#ffe7e7"
         }else {
-            field.style.border = "2px solid green";
-            field.style.backgroundColor = "#e7ffe7";
+            field.style.border = "1px solid green"
+            field.style.backgroundColor = "#e7ffe7"
         }
     }
 
+    function submitconf() {
+        return confirm("Are you sure you want to submit the form?")
+    }
+    function resetconf() {
+        return confirm("Are you sure you want to reset the form?")
+    }
+
+    const KEY = "signups";
+
+    document.getElementById("signupForm").onsubmit = function (event) {
+        event.preventDefault(); 
+
+        const signup = {
+            studentID: document.getElementById("studentID").value,
+            name: document.getElementById("name").value,
+            bday: document.getElementById("bday").value,
+            email: document.getElementById("email").value,
+            mpnum: document.getElementById("mpnum").value,
+            glevel: document.getElementById("glevel").value,
+            homestat: document.querySelector('input[name="homestat"]:checked').value,
+            club: document.getElementById("pclb").value,
+        };
+
+        let signups = localStorage.getItem(KEY);
+
+        if (signups) {
+            signups = JSON.parse(signups);
+        } else {
+            signups = [];
+        }
+
+        signups.push(signup);
+        localStorage.setItem(KEY, JSON.stringify(signups));
+
+        alert("Your sign up has been recorded.");
+        this.reset();
+
+    }
 </script>
 
 </html>
