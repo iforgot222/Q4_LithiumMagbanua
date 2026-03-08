@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="1st Graded">
+    <meta name="keywords" content="1st Graded">
+    <meta name="author" content="Nikki">
+    <title>q41gLithiumMagbanua</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="" sizes="32x32" type="image/png" />
+    <script src="script.js"defer></script>
+
+    <style>
+        body {
+            font-family: Georgia;
+        }
+
+        fieldset {
+            border: 1px solid #ccc;
+            padding: 0rem 2rem 2rem 2rem;
+            margin: 0 auto;
+            max-width: 35%
+        }
+
+        h1 {
+            padding: 1rem;
+            font-size: 1.7rem;
+            text-align: center;
+        }
+
+        input, select, button {
+            padding: 0.5rem;
+            width: 95%;
+            font-family: Georgia;
+        }
+
+        button {
+            background-color: #1f73d3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Star rating CSS */
+
+        .stars { 
+            direction: rtl; 
+            text-align: left; 
+            margin: -1rem 0 1rem 0;
+        }
+
+        .stars input { 
+            display: none; 
+        }
+
+        .stars label { 
+            color: gray; 
+            font-size: 1.5rem; 
+            cursor: pointer; 
+        }
+
+        .stars input:checked ~ label { 
+            color: gold; 
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Q4 1st Graded - Movie Rating</h1>
+
+    <form id="movieRating">
+        <fieldset>
+            <h1> Add a Movie </h1>
+
+            <p> Title: </p><input type="text" id="title" name="title" required></br>
+
+            <p> Year: </p><input type="number" id="year" name="year" required></br>
+
+            <p> Genre: </p>
+                <select id="genre" name="genre" required>
+                    <option value="">-- Select Genre --</option>
+                    <option value="Comedy">Historical</option>
+                    <option value="Science-Fiction">Science-fiction</option>
+                    <option value="Drama">Thriller</option>
+                    <option value="Horror">Horror</option>
+                    <option value="Romance">Romance</option>
+                </select>
+            </br>
+
+            <p> Rating: </p>
+            <div class="stars">
+                <input type="radio" id="s5" name="rating"><label for="s5">★</label>
+                <input type="radio" id="s4" name="rating"><label for="s4">★</label>
+                <input type="radio" id="s3" name="rating"><label for="s3">★</label>
+                <input type="radio" id="s2" name="rating"><label for="s2">★</label>
+                <input type="radio" id="s1" name="rating"><label for="s1">★</label>
+            </div>
+
+            <button> Add Movie </button>
+
+            <h1> Movie List </h1>
+            <div id="movieListDiv"></div>
+        </fieldset>
+    </form>
+</body>
+
+<script>
+    //get movie list from local storage or make an empty array if it doesn't exist
+    movieList = JSON.parse(localStorage.getItem("movies")) || [];
+    const form = document.querySelector("form");
+
+    form.addEventListener("submit", function(event){
+
+        event.preventDefault();
+
+        if(confirm("Please confirm to save")){
+
+            //get rating value
+            let ratingValue = document.querySelector('input[name="rating"]:checked');
+            let rating = ratingValue.id.replace("s","");
+
+            //add the movie to the list as an object
+            movieList.push({
+                title: title.value,
+                year: year.value,
+                genre: genre.value,
+                rating: rating
+            });
+
+            //save to localStorage
+            localStorage.setItem("movies", JSON.stringify(movieList));
+
+            //refresh display
+            dispMovies(movieList);
+        }
+
+    });
+
+
+    function dispMovies(movielist){
+        dispList = "";
+
+        for(let i=0; i<movielist.length; i++){
+
+            stars = "★".repeat(movielist[i].rating);
+
+            //format for displaying each movie
+            dispList += `<p>
+            ${movielist[i].title} (${movielist[i].year}) -
+            ${movielist[i].genre},
+            Rating: <span style="color:gold">${stars}</span>
+            </p>`;
+        }
+
+        movieListDiv.innerHTML = dispList;
+    }
+
+    //displays movies on page
+    dispMovies(movieList);
+</script>
