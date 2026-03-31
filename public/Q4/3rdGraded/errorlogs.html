@@ -69,13 +69,13 @@
       </tr>
       <tr>
         <td> 3 </td> 
-        <td> Line 7 in script.js </td> 
+        <td> Line 9 in script.js </td> 
         <td> Syntax Error: "point.styleleft", missing period between "point.style" and "left" </td>
         <td> Changed to "point.style.left" </td>
       </tr>
       <tr>
         <td> 4 </td> 
-        <td> Line 8 in script.js </td> 
+        <td> Line 10 in script.js </td> 
         <td> Syntax Error: "point.stylebottom", missing period between "point.style" and "bottom" </td>
         <td> Changed to "point.style.bottom" </td>
       </tr>
@@ -106,16 +106,17 @@
       </tr>
       <tr>
         <td> 9 </td> 
-        <td> Line 5, 14, 17, 20, 23, 26 in script.js </td> 
-        <td> Variables not declared before use </td>
-        <td> Declared variables at the beginning of the function by adding: 
-          "var in1 = document.getElementById("in1"); var out1 = document.getElementById("out1");" </td>
+        <td> Line 5 in script.js </td> 
+        <td> Variable "in1" not declared before use </td>
+        <td> Declared variables at the beginning of the function by adding 
+          "var in1 = document.getElementById("in1")" to Line3 </td>
       </tr>
       <tr>
         <td> 10 </td> 
-        <td> </td> 
-        <td> </td>
-        <td> </td>
+        <td> Lines 14, 17, 20, 23, 26 in script.js </td> 
+        <td> Variable "out1" not declared before use </td>
+        <td> Declared variables at the beginning of the function by adding 
+          "var out1 = document.getElementById("out1")" to Line 4 </td>
       </tr>
      
     </table>
